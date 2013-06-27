@@ -347,18 +347,4 @@ public class GenericIntegrationTest {
         }
     }
 
-    @Test
-    public void testStaticFile() throws Exception {
-        UrlResponse response = testUtil.doMethod("GET", "/css/style.css", null);
-        Assert.assertEquals(200, response.status);
-        Assert.assertEquals("Content of css file", response.body);
-    }
-
-    @Test
-    public void testExternalStaticFile() throws Exception {
-        UrlResponse response = testUtil.doMethod("GET", "/externalFile.html", null);
-        Assert.assertEquals(200, response.status);
-        Assert.assertEquals("Content of external file", response.body);
-    }
-
 }

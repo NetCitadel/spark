@@ -16,7 +16,7 @@ public class FreeMarkerExample {
         get(new FreeMarkerTemplateView("/hello") {
             @Override
             public ModelAndView handle(Request request, Response response) {
-                Map<String, Object> attributes = new HashMap<>();
+                Map<String, Object> attributes = new HashMap<String, Object>();
                 attributes.put("message", "Hello World");
                 return new ModelAndView(attributes, "hello.ftl");
             }

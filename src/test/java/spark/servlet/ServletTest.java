@@ -3,13 +3,17 @@ package spark.servlet;
 import junit.framework.Assert;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.bio.SocketConnector;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import spark.TAccess;
 import spark.util.SparkTestUtil;
 import spark.util.SparkTestUtil.UrlResponse;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import static spark.util.SparkTestUtil.sleep;
 
@@ -30,27 +34,27 @@ public class ServletTest {
 
     @BeforeClass
     public static void setup() throws Exception {
-        testUtil = new SparkTestUtil(PORT);
-
-        ServerConnector connector = new ServerConnector(server);
-
-        // Set some timeout options to make debugging easier.
-        connector.setIdleTimeout(1000 * 60 * 60);
-        connector.setSoLingerTime(-1);
-        connector.setPort(PORT);
-        server.setConnectors(new Connector[]{connector});
-
-        WebAppContext bb = new WebAppContext();
-        bb.setServer(server);
-        bb.setContextPath(SOMEPATH);
-        bb.setWar("src/test/webapp");
-
-        server.setHandler(bb);
+		testUtil = new SparkTestUtil(PORT);
+		
+		SocketConnector connector = new SocketConnector();
+		
+		// Set some timeout options to make debugging easier.
+		connector.setMaxIdleTime(1000 * 60 * 60);
+		connector.setSoLingerTime(-1);
+		connector.setPort(PORT);
+		server.setConnectors(new Connector[] { connector });
+		
+		WebAppContext bb = new WebAppContext();
+		bb.setServer(server);
+		bb.setContextPath(SOMEPATH);
+		bb.setWar("src/test/webapp");
+		
+		server.setHandler(bb);
 
         System.out.println(">>> STARTING EMBEDDED JETTY SERVER for jUnit testing of SparkFilter");
         server.start();
-
-        sleep(1000);
+		
+		sleep(1000);
     }
 
     @Test
